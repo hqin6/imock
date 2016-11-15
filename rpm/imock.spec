@@ -14,7 +14,7 @@ mock tools, include client and server. It can be used in http prototocol, and it
 
 cd $OLDPWD;
 cd ../src;
-make -j2
+make
 
 
 %install

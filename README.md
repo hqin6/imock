@@ -9,7 +9,16 @@
 
 服务层面：支持client/server
 
-# 编译 #
+# 编译&安装 #
+
+依赖如下开发包：
+```bash
+log4cpp-devel
+protobuf-devel
+boost-devel
+libevent-devel
+libcurl-devel
+```
 
 ```bash
 $ git clone https://github.com/hqin6/imock.git
@@ -17,6 +26,8 @@ $ cd imock/rpm
 $ ./imock-build.sh
 $ rpm -Uvh imock-*.rpm
 ```
+
+__注意__：如果需要https支持，需要安装libevent的2.1.x版本或以上，并打开src/server/Makefile里的-DHTTPS_SUPPORT选项
 
 # 配置说明 #
 imock的结构很简单，任何一个imock角色，无论是server还是client，都由四部分组成：
