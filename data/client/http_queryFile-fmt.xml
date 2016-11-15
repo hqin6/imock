@@ -1,0 +1,13 @@
+<!--/home/a/imock/data/client/http_queryFile-fmt.xml--> 
+<fmt>
+    <q>
+        <Arg fmt='k=v' kv_repeated_split='&#38;' to='HTTP_URI_QUERY'>
+            <url>
+                <uri split='?'/>
+                <args fmt='k=v' kv_repeated_split='&#38;'/>
+            </url>
+        </Arg>
+    </q>
+    <a/>
+</fmt>
+

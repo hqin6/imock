@@ -1,0 +1,10 @@
+<dat>
+    <qa>
+        <q>
+            <ad>
+                <click match='shell,replaceshvar' match_shell_cmd='echo -n 0;'></click>
+                <img></img>
+            </ad>
+        </q>
+    </qa>
+</dat>

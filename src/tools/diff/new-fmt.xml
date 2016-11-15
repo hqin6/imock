@@ -1,0 +1,14 @@
+<fmt>
+    <q repeated_split='&#xa;' sub_def_split=';'>
+        <v/>
+        <id var='$id'></id>
+        <cookie var='$c'></cookie>
+        <ad repeatd_split='|' sub_def_split=','>
+            <click></click>
+            <img></img>
+        </ad>
+        <adnum></adnum>
+        <_im_diff_key op='shell,replaceshvar' shell_cmd='echo -n $id, $c' from='NULL'></_im_diff_key>
+    </q>
+    <a/>
+</fmt>

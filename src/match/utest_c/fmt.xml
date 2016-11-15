@@ -1,0 +1,84 @@
+<!---xml自动缩进功能开启：filetype plugin indent on 配置到.vimrc中即可-->
+<fmt>
+    <q fid=0>
+        <address_book>
+            <person repeated_split=';' sub_def_split='|'>
+                <name></name>
+                <id></id>
+                <email></email>
+                <phone repeated_split=','>
+                    <number split='_'></number>
+                    <type></type> 
+                </phone>
+            </person> 
+        </address_book>
+    </q>
+    <a fid=0>
+        <length type='INT'/>
+        <data length=3/>
+        <l2 split=','/>
+        <tail/>
+    </a>
+    <q fid=3>
+        <args fmt='k=v' kv_repeated_split=';' split='}'>
+            <a type='INT'/>
+            <b sub_def_split=','>
+                <b1 repeated_split='-'></b1>
+                <b2 fmt='k:v'></b2>
+            </b>
+            <c>
+            </c>
+        </args>
+        <tail/>
+    </q>
+    <a fid=2>
+        <args split='.' fmt='k=v' kv_repeated_split=';' repeated_split='|'>
+            <email sub_def_split='@'>
+                <n></n>
+                <t></t>
+            </email>
+        </args>
+        <len var='$len' split=':'></len>
+        <k length='$len' fmt='pb' message='Pair' file='foo.proto'>
+            <key sub_def_split='.'>
+                <a/>
+                <b/>
+            </key>
+        </k>
+    </a>
+    <q fid=4>
+        <pb fmt='pb' message="Pair" file='foo.proto'>
+            <key>
+                <a var='$len' split=';'></a>
+                <b length='$len'></b>
+                <c>
+                    <a split=';'></a>
+                </c>
+            </key>
+        </pb>
+    </q>
+    <a fid=6>
+        <pb fmt='pb' message="tutorial.AddressBook" file='addr.proto'>
+            <person>
+                <email sub_def_split='@'>
+                    <name></name>
+                    <net></net>
+                </email>
+            </person>
+        </pb>
+    </a>
+    <q fid=7>
+        <args fmt='k=v' kv_repeated_split=';' repeated_split='|'>
+        </args>
+    </q>
+    <a fid=7>
+        <url op='urldec'></url>
+    </a>
+    <q fid=8>
+        <args fmt='json' op='urlenc'>
+        </args>
+    </q>
+    <a fid=8>
+        <url op='urldec' fmt='json'></url>
+    </a>
+</fmt>

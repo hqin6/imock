@@ -1,0 +1,15 @@
+<!--/home/a/imock/data/server/http_queryFile-fmt.xml--> 
+<fmt>
+    <q>
+        <Arg fmt='k=v' kv_repeated_split='&#38;' from='HTTP_URI_QUERY|BODY'>
+            <url op='urldec'>
+                <uri split='?'/>
+                <args fmt='k=v' kv_repeated_split='&#38;'>
+                    <f var='$fileName'/>
+                </args>
+            </url>
+        </Arg>
+    </q>
+    <a/>
+</fmt>
+

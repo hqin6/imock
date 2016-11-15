@@ -1,0 +1,5 @@
+1.0;4d;mnp;http://www.click.com/id=4d,www.img.com/id=4d
+1.0;1a;abc;http://www.click.com/id=1a,www.img.com/id=1a
+1.0;5e;kkk;http://www.click.com/id=5e,www.img.com/id=5e
+1.0;3c;xyz;http://www.click.com/id=3c,www.img.com/id=3c
+1.0;2b;def;http://www.click.com/id=2b,www.img.com/id=2b

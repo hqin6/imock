@@ -1,0 +1,392 @@
+<dat>
+    <qa>
+        <q fid='xxx'>
+            <a>
+                <a1>4</a1>
+                <a2>abcd</a2>
+            </a>
+            <a>
+                <a1>3</a1>
+                <a2>abc</a2>
+            </a>
+        </q>
+        <a fid='xxx'></a>
+    </qa>
+    <qa id=1>
+        <q id=a fid=0>
+            <address_book>
+                <person>
+                    <name>zhangsan</name>
+                    <id>1</id>
+                </person>
+            </address_book>
+        </q>
+        <a fid=1>
+            <id>123</id>
+            <k>
+                <k1>k1</k1>
+            </k>
+            <k>
+                <k1>k2</k1>
+            </k>
+            <v>
+                <v1 op='hide'>v1</v1>
+                <v1 from='file, cached'>from_file</v1>
+                <v1 from='var'>$id</v1>
+            </v>
+        </a>
+    </qa>
+    <qa id=2>
+        <q id=b fid=0>
+            <address_book>
+                <person>
+                    <email match='reg, icase'>.*@163.COM</email>
+                </person>
+            </address_book>
+        </q>
+        <a fid=1>
+            <id op='hide'>123</id>
+            <k>
+                <k1>k1</k1>
+            </k>
+            <k>
+                <k1>k2</k1>
+            </k>
+            <v>
+                <v1 op='hide'>v1</v1>
+                <v1 from='file, cached'>from_file</v1>
+                <v1 from='var'>$id</v1>
+            </v>
+        </a>
+    </qa>
+    <qa id=3>
+        <q id=c fid=1>
+            <length match='int, <, ='>10</length>
+            <l2 match='='>5</l2>
+            <d2>defgg</d2>
+        </q>
+        <a fid=6>
+            <pb>
+                <person>
+                    <name>zhangsan</name>
+                    <id>3</id>
+                    <email>
+                        <name>zs</name>
+                        <net>163.com</net>
+                    </email>
+                    <phone>
+                        <number>010-11</number>
+                        <type>WORK</type>
+                    </phone>
+                    <phone>
+                        <number>123</number>
+                        <type>MOBILE</type>
+                    </phone>
+                </person>
+                <person>
+                    <name>lisi</name>
+                    <id>4</id>
+                </person>
+            </pb>
+        </a>
+    </qa>
+    <qa id=4>
+        <q id=d fid=1>
+            <length match='int, <, ='>10</length>
+            <l2 match='='>4</l2>
+            <d2>defg</d2>
+        </q>
+        <a fid=4>
+            <type>abcd</type>
+            <pb>
+                <person>
+                    <name>zhangsan</name>
+                    <id>3</id>
+                    <email>
+                        <name>zs</name>
+                        <net>163.com</net>
+                    </email>
+                    <phone>
+                        <number>010-11</number>
+                        <type>WORK</type>
+                    </phone>
+                    <phone>
+                        <number>123</number>
+                        <type>MOBILE</type>
+                    </phone>
+                </person>
+                <person>
+                    <name>lisi</name>
+                    <id>4</id>
+                </person>
+            </pb>
+        </a>
+    </qa>
+    <qa id=5>
+        <q id=e fid=0>
+            <address_book>
+                <person>
+                    <phone>
+                        <number match='<'>abd</number>
+                    </phone>
+                </person>
+            </address_book>
+        </q>
+        <q id=f fid=0>
+            <address_book>
+                <person>
+                    <phone>
+                        <type match='reg'>HOM*</type>
+                    </phone>
+                </person>
+            </address_book>
+        </q>
+        <a fid=2 rate=1>
+            <args>
+                <file from='file'>from_file</file>
+                <email>
+                    <n>zs</n>
+                    <t>fuck.com</t>
+                </email>
+                <a>1</a>
+                <b></b>
+            </args>
+        </a>
+        <a fid=2 rate=1>
+            <args>
+                <a>a1</a>
+                <b>b2</b>
+            </args>
+            <args>
+                <c>c3</c>
+            </args>
+        </a>
+    </qa>
+    <qa id=6>
+        <q id=aa fid=0>
+            <address_book>
+                <person>
+                    <phone>
+                        <number>yyy</number>
+                    </phone>
+                </person>
+            </address_book>
+        </q>
+        <a fid=3>
+            <args op='hide'>
+                <a>a1</a>
+                <b>b1</b>
+                <b>b2</b>
+                <email>
+                    <n>2</n>
+                    <t>3</t>
+                </email>
+            </args>
+            <args>
+                <b>b2</b>
+                <email>
+                    <t>3</t>
+                </email>
+            </args>
+            <a from='var'>$n</a>
+            <b>bxx</b>
+        </a>
+    </qa>
+    <qa id=7>
+        <q id=bb fid=2>
+            <a>100</a>
+        </q>
+        <a fid=5>
+            <args>
+                <a>a1</a>
+                <b>b1</b>
+            </args>
+            <a>A</a>
+        </a>
+    </qa>
+    <qa id=8>
+        <q id=cc fid=3>
+            <args>
+                <b>
+                    <b2>b2v</b2>
+                </b>
+                <k>key</k>
+            </args>
+        </q>
+        <a fid=7>
+            <pb>
+                <person>
+                    <name>len</name>
+                    <id from='var'>$len</id>
+                </person>
+            </pb>
+        </a>
+    </qa>
+    <qa id=9>
+        <q id=dd fid=4>
+            <args>
+                <a>
+                    <a2>3</a2>
+                </a>
+            </args>
+        </q>
+        <a fid=8>
+            <pb>
+                <person>
+                    <name>
+                        <person>
+                            <name>zhangsan</name>
+                            <id>3333</id>
+                        </person>
+                    </name>
+                    <id>123</id>
+                </person>
+            </pb>
+        </a>
+    </qa>
+    <qa>
+        <q id=ee fid=5>
+            <pb>
+                <key>
+                    <c>12</c>
+                </key>
+            </pb>
+        </q>
+        <a fid=3>
+            <args>
+                <a>aa</a>
+                <email op='no_pack'>xx</email>
+            </args>
+            <a>132</a>
+            <b op='no_pack'>100</b>
+        </a>
+    </qa>
+    <qa>
+        <q id=ff fid=6>
+            <pb>
+                <person>
+                    <email>
+                        <name>zs</name>
+                    </email>
+                    <phone>
+                        <type>MOBILE</type>
+                    </phone>
+                </person>
+            </pb>
+        </q>
+        <a fid=4>
+            <type>mytype</type>
+            <pb op='no_pack'>this is pb</pb>
+        </a>
+    </qa>
+    <qa id=10>
+        <q id=gg fid=7>
+            <args>
+                <url>p.tanx.com/ex?i=1&amp;b=2</url>
+            </args>
+        </q>
+        <a fid=7 op='no_pack'>hello</a>
+    </qa>
+    <qa id=11>
+        <q id=xx fid=8>
+            <pb>
+                <person>
+                    <name>
+                        <person>
+                            <name>zhangsan</name>
+                            <email match='reg, icase'>.*@163.COM</email>
+                            <phone>
+                                <type>HOME</type>
+                            </phone>
+                            <phone>
+                                <type>MOBILE</type>
+                            </phone>
+                        </person>
+                    </name>
+                    <id>124</id>
+                    <email match='reg'>.*@126.com</email>
+                    <phone>
+                        <number>010</number>
+                        <type>WORK</type>
+                    </phone>
+                </person>
+            </pb>
+        </q>
+        <a fid=5>
+            <args>
+                <a>a1</a>
+                <b>b1</b>
+            </args>
+            <a>A</a>
+        </a>
+    </qa>
+    <qa id=111>
+        <q fid=9>
+            <a>http://</a>
+        </q>
+        <a fid=100>
+            <a from='var' op='urlenc'>$a</a>
+            <b from='var' op='urlenc'>$b</b>
+        </a>
+    </qa>
+    <qa id=123>
+        <q fid=10>
+            <head>http://xxx.com/ex</head>
+            <args>
+                <js>
+                    <b>
+                        <v1>bv</v1>
+                    </b>
+                    <c>
+                        <c2>
+                            <v>v1</v>
+                            <v>v2</v>
+                        </c2>
+                    </c>
+                </js>
+            </args>
+        </q>
+        <a fid=9>
+            <js>
+                <a>
+                    <a1>11</a1>
+                    <a2>22</a2>
+                    <b>
+                        <b1>1b</b1>
+                        <b2>b22</b2>
+                        <b1>1.1b</b1>
+                    </b>
+                    <a1>111</a1>
+                </a>
+                <a>
+                    <a3>33</a3>
+                    <a2>22</a2>
+                    <b>
+                        <b1>b-1</b1>
+                        <b2>b22</b2>
+                        <b1>1.1-b</b1>
+                    </b>
+                    <a1>333</a1>
+                </a>
+            </js>
+        </a>
+    </qa>
+    <qa id=10001>
+        <q fid='1a'>
+            <pb>
+                <goodman>true</goodman>
+            </pb>
+        </q>
+        <a fid='1a'>
+            <pb>
+                <name>xxx</name>
+                <id>9876103</id>
+                <goodman>false</goodman>
+            </pb>
+        </a>
+    </qa>
+    <qa id=1000>
+        <q fid=9 match='fmt_err'></q>
+        <a fid=5></a>
+    </qa>
+</dat>

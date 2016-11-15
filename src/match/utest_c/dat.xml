@@ -1,0 +1,133 @@
+<dat>
+    <qa id=1>
+        <q id=a fid=0 rate=1>
+            <address_book>
+                <person>
+                    <name>zhangsan</name>
+                    <id>1</id>
+                    <email>zs@fuck.com</email>
+                    <phone>
+                        <number>010-111</number>
+                        <type>MOBILE</type>
+                    </phone>
+                </person>
+            </address_book>
+        </q>
+        <q id=b fid=0 rate=1>
+            <address_book>
+                <person>
+                    <id from='file'>from_file</id>
+                    <email op='hide'></email>
+                    <phone>
+                        <number>011-123</number>
+                    </phone>
+                    <phone op='no_pack'>xxx</phone>
+                </person>
+            </address_book>
+        </q>
+        <a fid=0>
+            <length>10</length>
+            <data>aaa</data>
+            <l2>123</l2>
+            <tail>tailv</tail>
+        </a>
+    </qa>
+    <qa id='xxx'>
+        <q fid=3>
+            <args>
+                <a>10</a>
+                <c>ccc</c>
+                <b>
+                    <b1>0</b1>
+                    <b1>1</b1>
+                    <b2>
+                        <b21>21</b21>
+                        <b22>22</b22>
+                    </b2>
+                    <b1>2</b1>
+                </b>
+            </args>
+            <tail>t100</tail>
+        </q>
+        <a fid=2>
+            <args>
+                <a>10</a>
+                <b>20</b>
+                <email>
+                    <n>1</n>
+                    <t>2</t>
+                </email>
+            </args>
+            <args>
+                <c>30</c>
+            </args>
+            <len>len=9</len>
+            <k>
+                <key>
+                    <a>av</a>
+                    <b>bv</b>
+                </key>
+            </k>
+        </a>
+    </qa>
+    <qa id='xx1'>
+        <q fid=4>
+            <pb>
+                <key>
+                    <a>3</a>
+                    <b>hel</b>
+                    <c>
+                        <a>1cc</a>
+                    </c>
+                </key>
+                <value>200</value>
+            </pb>
+        </q>
+        <a fid=6 match='fmt_ok'>
+        </a>
+    </qa>
+    <qa id='xx2'>
+        <q fid=7>
+            <args>
+                <a>100</a>
+                <b>200</b>
+                <url op='urldec'>http%3A%2F%2Fwww.baidu.com</url>
+            </args>
+        </q>
+        <a fid=7>
+            <url>http://www.baidu.com</url>
+        </a>
+    </qa>
+    <qa id='xx3'>
+        <q fid=8>
+            <args>
+                <a>100</a>
+                <b>200</b>
+                <a>101</a>
+                <c>
+                    <c1>001</c1>
+                    <c2>002</c2>
+                </c>
+                <c>
+                    <c3>003</c3>
+                    <c4>004</c4>
+                </c>
+            </args>
+        </q>
+        <a fid=8>
+            <url>
+                <a>100</a>
+                <a>101</a>
+                <b>200</b>
+                <c>
+                    <c1>001</c1>
+                    <c2>002</c2>
+                </c>
+                <c>
+                    <c3>003</c3>
+                    <c4>004</c4>
+                </c>
+            </url>
+        </a>
+    </qa>
+</dat>

@@ -1,0 +1,5 @@
+message Pair {
+    required string key = 1;
+    required uint32 value = 2;
+
+}

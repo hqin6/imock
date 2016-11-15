@@ -1,0 +1,16 @@
+<!--/home/a/imock/data/server/http_queryFile-dat.xml--> 
+<dat>
+    <qa>
+        <q>
+            <Arg>
+                <url op='urldec'>
+                    <args>
+                        <f match='exist'/>
+                    </args>
+                </url>
+            </Arg>
+        </q>
+        <a from='file,cached'>$fileName</a>
+    </qa>
+</dat>
+

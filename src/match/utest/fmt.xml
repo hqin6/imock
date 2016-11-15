@@ -1,0 +1,193 @@
+<!---xml自动缩进功能开启：filetype plugin indent on 配置到.vimrc中即可-->
+<fmt>
+    <q fid='xxx'>
+        <a repeated_split=''>
+            <a1 length=1 var='$len'></a1>
+            <a2 length='$len'></a2>
+        </a>
+    </q>
+    <a fid='xxx'></a>
+    <q fid=0>
+        <address_book>
+            <person repeated_split=';' sub_def_split='|'>
+                <name></name>
+                <id var='$id'></id>
+                <email></email>
+                <phone repeated_split=','>
+                    <number var='$n' split='_'></number>
+                    <type></type> 
+                </phone>
+            </person> 
+        </address_book>
+    </q>
+    <q fid=1>
+        <length type='INT' var='$len'/>
+        <data length='$len'/>
+        <l2 var='$l2' split=','/>
+        <d2 length='$l2'/>
+        <tail/>
+    </q>
+    <q fid=2 repeated_split=';' sub_def_split=','>
+        <a></a>
+        <b></b>
+    </q>
+    <q fid=3>
+        <args fmt='k=v' kv_repeated_split=';'>
+            <a type='INT' var='$len'/>
+            <b>
+                <b1 length='$len'></b1>
+                <b2></b2>
+            </b>
+            <c>
+            </c>
+        </args>
+    </q>
+    <q fid=4>
+        <args fmt='k=v' kv_repeated_split=';' split='|'>
+            <c var='$len'/>
+            <a fmt='k:v' kv_repeated_split=','> </a>
+        </args>
+        <d length='$len'/>
+        <e/>
+    </q>
+    <q fid=5>
+        <pb fmt='pb' message="Pair" file='foo.proto'>
+            <key>
+                <a var='$len' split=';'></a>
+                <b length='$len'></b>
+                <c/>
+            </key>
+        </pb>
+    </q>
+    <q fid=6>
+        <pb fmt='pb' message="tutorial.AddressBook" file='addr.proto'>
+            <person>
+                <email sub_def_split='@'>
+                    <name></name>
+                    <net></net>
+                </email>
+            </person>
+        </pb>
+    </q>
+    <q fid=7>
+        <args fmt='k=v' kv_repeated_split=';'>
+            <url op='urldec'></url>
+        </args>
+    </q>
+    <a fid=1 sub_def_split=';'>
+        <id split=',' type='INT'/>
+        <k repeated_split='='>
+            <k1></k1>
+        </k>
+        <v>
+            <v1 repeated_split='-'></v1>
+        </v>
+    </a>
+    <a fid=2 >
+        <args fmt='k=v' kv_repeated_split=';' repeated_split='|'>
+            <email sub_def_split='@'>
+                <n></n>
+                <t></t>
+            </email>
+        </args>
+    </a>
+    <a fid=3 sub_def_split='-'>
+        <args fmt='k==v' kv_repeated_split=';' repeated_split='|'>
+            <email sub_def_split='@'>
+                <n></n>
+                <t></t>
+            </email>
+        </args>
+        <a></a>
+        <b></b>
+    </a>
+    <a fid=4>
+        <type></type>
+        <pb fmt='pb' message="tutorial.AddressBook" file='addr.proto'>
+            <person>
+                <email sub_def_split='@'>
+                    <name></name>
+                    <net></net>
+                </email>
+            </person>
+        </pb>
+    </a>
+    <a fid=5 sub_def_split='-'>
+        <args fmt='k==v' kv_repeated_split=';' repeated_split='|'>
+        </args>
+        <a></a>
+        <b></b>
+    </a>
+    <a fid=6>
+        <pb fmt='pb' message="tutorial.AddressBook" file='addr.proto'>
+            <person>
+                <email sub_def_split='@'>
+                    <name></name>
+                    <net></net>
+                </email>
+            </person>
+        </pb>
+    </a>
+    <a fid=7>
+        <pb fmt='pb' message="tutorial.AddressBook" file='addr.proto'>
+        </pb>
+    </a>
+    <a fid=8>
+        <pb fmt='pb' message="tutorial.AddressBook" file='addr.proto'>
+            <person>
+                <name fmt='pb' message="tutorial.AddressBook" file='addr.proto'></name>
+            </person>
+        </pb>
+    </a>
+    <q fid=8>
+        <a type="INT" var='$len'></a>
+        <pb length='$len' fmt='pb' message="tutorial.AddressBook" file='addr.proto'>
+            <person>
+                <name fmt='pb' message="tutorial.AddressBook" file='addr.proto'></name>
+            </person>
+        </pb>
+        <b></b>
+    </q>
+    <q fid=9 sub_def_split='#'>
+        <a var='$a' op='urldec'></a>
+        <b var='$b'></b>
+    </q>
+    <a fid=100>
+        <a split='|'></a>
+        <b></b>
+    </a>
+
+    <q fid=10>
+        <head split='?'></head>
+        <args fmt='k-v' kv_repeated_split='$'>
+            <js fmt='json' op='urldec'>
+                <b sub_def_split='_'>
+                    <v1></v1>
+                    <v2></v2>
+                    <v3></v3>
+                </b>
+                <c>
+                    <c2>
+                        <v repeated_split='_'></v>
+                    </c2>
+                    <c3>
+                        <key split='_'></key>
+                        <value></value>
+                    </c3>
+                </c>
+            </js>
+            <k></k>
+        </args>
+    </q>
+    <a fid=9>
+        <js fmt='json'></js>
+    </a>
+    <q fid='1a'>
+        <pb fmt='pb' message="tutorial.Person" file='addr.proto'>
+        </pb>
+    </q>
+    <a fid='1a'>
+        <pb fmt='pb' message="tutorial.Person" file='addr.proto'>
+        </pb>
+    </a>
+</fmt>

@@ -1,0 +1,19 @@
+<!--/home/a/imock/data/client/http_queryFile-dat.xml--> 
+<dat>
+    <qa>
+        <q>
+            <Arg>
+                <ip>127.0.0.1</ip>
+                <url op='urlenc'>
+                    <uri>http://abc.com</uri>
+                    <args>
+                        <a>1</a>
+                        <f>a.txt</f>
+                    </args>
+                </url>
+            </Arg>
+        </q>
+        <a match='fmt_ok'/>
+    </qa>
+</dat>
+
