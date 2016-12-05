@@ -157,6 +157,8 @@ message = /home/a/imock/logs/mock1.server.message.txt
 cache = on
 #日志定义，如果不设置，该area会继承全局的log配置，否则会（在本area）覆盖全局的log配置
 log = /tmp/mock1.log debug
+#实时信息记录，用于记录实时服务中的进出流量大小、qps和rt等
+realinfo = /tmp/realinfo.log
 #服务使用协议 (http|https)
 protocol = http
 #以下配置，针对不同的服务使用协议(protocol)有所差异：
@@ -207,6 +209,8 @@ log = /tmp/mock1.log debug
 #通过将file设置为off，可关闭message的记录功能
 #可选，默认值: off w
 message = /home/a/imock/logs/mock1.client.message.txt
+#实时信息记录，用于记录实时服务中的进出流量大小、qps和rt等
+realinfo = /tmp/realinfo.log
 #发送的超时时间，即接收应答的超时时间，单位毫秒
 #可选，默认值: 5000
 timeout = 5000
