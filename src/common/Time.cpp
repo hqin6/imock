@@ -82,3 +82,17 @@ bool Time::LT(const struct timeval& t1, const struct timeval& t2)
         return (t1.tv_usec < t2.tv_usec);
     }
 }
+
+string Time::StrTimeNow()
+{
+    time_t t = time(NULL);
+    char buf[64];
+    strftime(buf, sizeof(buf), "%d/%m/%g-%H:%M:%S", localtime(&t));
+    return string(buf);
+}
+
+double Time::SubTimeMs(const struct timeval& t1,
+        const struct timeval& t2)
+{
+    return (t1.tv_sec -t2.tv_sec)*1000 + (t1.tv_usec - t2.tv_usec)/1000;
+}

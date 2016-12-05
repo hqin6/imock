@@ -29,7 +29,7 @@ class HttpClientMock : public BaseClientMock
         bool Init();
 
     private:
-        int Send(QA* qa, RRMessage* req);
+        int Send(QA* qa, RRMessage* req, long& inBytes, long& outBytes, double& spentTimeMs);
         void SetPostFlag(RRMessage* req);
         void SetUrl(RRMessage* req);
         curl_slist* SetHttpHead(RRMessage* req);

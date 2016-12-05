@@ -174,7 +174,7 @@ int HttpServerMock::BeforeFork()
         return -1;
     }
     //注册超时回调函数
-    m_tm = evtimer_new(m_base, HttpServerMock::TimerCallBack, NULL);
+    m_tm = evtimer_new(m_base, HttpServerMock::TimerCallBack, this);
     m_exitEv = evtimer_new(m_base, HttpServerMock::InterruptLoop, this);
     if (! m_tm || ! m_exitEv)
     {
@@ -274,7 +274,7 @@ void HttpServerMock::TimerCallBack(int fd, short kind, void* userp)
         }
         for (list<struct TimerInfo*>::iterator i = it->second.begin(); i != it->second.end(); i++)
         {
-            Send((*i)->req, (*i)->res);
+            Send((*i)->req, (*i)->res, (*i)->recvMoment, userp);
             delete *i;
         }
     }
@@ -288,6 +288,8 @@ void HttpServerMock::Process(struct evhttp_request *req, void *arg)
     const struct evhttp_uri* eu = evhttp_request_get_evhttp_uri(req);
     HttpServerMock* hm = (HttpServerMock*)arg;
     RRMessage r;
+    struct timeval recvMoment;
+    gettimeofday(&recvMoment, NULL);
 
     //http的请求信息（包括http 头部)
     string query = "";
@@ -354,12 +356,18 @@ void HttpServerMock::Process(struct evhttp_request *req, void *arg)
             body += string(cbuf, n);
         }
     }
+
     r.SetBody(body);
     GLOG(IM_INFO, "[recv] ------head------\n%s", h.c_str());
     GLOG(IM_INFO, "[recv] query len=%d", body.size());
     GLOG(IM_INFO, "[recv] query body[0,1024]=%.*s", 
             1024, Str::ToPrint(body).c_str());
-    query += "\r\n" + body;
+    query += "\r\n" + body + "\r\n";
+    if (hm->m_mmapProcInfo)
+    {
+        hm->m_mmapProcInfo->AddOneIn(query.length());
+        GLOG(IM_DEBUG, "realinfo: add one in: %ld", query.length());
+    }
     //记录query
     hm->WriteMsg(query);
 
@@ -392,7 +400,7 @@ void HttpServerMock::Process(struct evhttp_request *req, void *arg)
     int us = resp->GetUSleep();
     if (us <= 0)
     {//立即发送
-        Send(req, resp);
+        Send(req, resp, recvMoment, hm);
         delete resp;
         return ;
     }
@@ -400,6 +408,7 @@ void HttpServerMock::Process(struct evhttp_request *req, void *arg)
     TimerInfo* ti = new TimerInfo;
     ti->req = req;
     ti->res = resp;
+    ti->recvMoment = recvMoment;
     struct timeval tv;
     gettimeofday(&tv, NULL);
     Time::AddUS(tv, us);
@@ -412,7 +421,10 @@ void HttpServerMock::Process(struct evhttp_request *req, void *arg)
     evtimer_add(hm->m_tm, &timeout);
 }
 
-void HttpServerMock::Send(struct evhttp_request* req, RRMessage* res)
+void HttpServerMock::Send(struct evhttp_request* req, 
+        RRMessage* res, 
+        struct timeval& recvMoment,
+        void* arg)
 {
     struct evbuffer *evb = evbuffer_new();
     EList<pair<string, string> >& v = res->GetHttpHead();
@@ -451,6 +463,18 @@ void HttpServerMock::Send(struct evhttp_request* req, RRMessage* res)
     }
 
     evhttp_send_reply(req, code, msg.c_str(), evb);
+    if (((HttpServerMock*)arg)->m_mmapProcInfo)
+    {
+        ((HttpServerMock*)arg)->m_mmapProcInfo->AddOneOut(
+            evbuffer_get_length(bufferevent_get_output(evhttp_connection_get_bufferevent(req->evcon))));
+        GLOG(IM_DEBUG, "realinfo: add one out: %ld", 
+                evbuffer_get_length(bufferevent_get_output(evhttp_connection_get_bufferevent(req->evcon))));
+        struct timeval tmp;
+        gettimeofday(&tmp, NULL);
+        double spentMs = Time::SubTimeMs(tmp, recvMoment);
+        ((HttpServerMock*)arg)->m_mmapProcInfo->AddTime(spentMs);
+        GLOG(IM_DEBUG, "realinfo: add spent(ms): %lf", spentMs);
+    }
     GLOG(IM_INFO, "[send] answer len=%d", res->GetBody().size());
     GLOG(IM_INFO, "[send] answer body[0,1024]=%.*s", 
             1024, Str::ToPrint(res->GetBody()).c_str());

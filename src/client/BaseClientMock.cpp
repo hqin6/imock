@@ -149,10 +149,23 @@ int BaseClientMock::SendDat()
         RRMessage req;
         if ((*it)->Query(&req, m_qID))
         {
-            if (0 != (tmp = Send(*it, &req)))
+            long inBytes = 0, outBytes = 0;
+            double spentTimeMs = 0.0;
+            if (0 != (tmp = Send(*it, &req, inBytes, outBytes, spentTimeMs)))
             {
                 ret = tmp;
             }
+            if (outBytes != 0)
+            {
+                m_mmapProcInfo->AddOneOut(outBytes);
+                m_mmapProcInfo->AddTime(spentTimeMs);
+            }
+            if (inBytes != 0)
+            {
+                m_mmapProcInfo->AddOneIn(inBytes);
+            }
+            GLOG(IM_DEBUG, "realinfo: in(%ld), out(%ld), time ms(%lf)",
+                    inBytes, outBytes, spentTimeMs);
         }
         if (m_pause_ms > 0)
         {
@@ -162,7 +175,8 @@ int BaseClientMock::SendDat()
     return ret;
 }
 
-int BaseClientMock::Send(QA* qa, RRMessage* req)
+int BaseClientMock::Send(QA* qa, RRMessage* req, 
+        long& inBytes, long& outBytes, double& spentTimeMs)
 {
     return 0;
 }

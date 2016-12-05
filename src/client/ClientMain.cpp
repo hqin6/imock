@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <iostream>
+#include <sys/mman.h>
 #include "INIConf.h"
 #include "Log.h"
 #include "MockClientFactory.h"
@@ -174,7 +175,12 @@ int main(int argc, char* argv[])
         g_bm->SetWorkers(worker);
     }
     g_bm->SetInfo(num, seconds, pause_ms, qID, qaID);
-    g_bm->Run();
+
+    int mmapSize = g_bm->GetWorkers()* sizeof(ProcInfo);
+    ProcInfo* mmapPI = (ProcInfo*)mmap(NULL, 
+            mmapSize, PROT_READ|PROT_WRITE, 
+            MAP_SHARED|MAP_ANONYMOUS, -1, 0);
+    g_bm->Run(mmapPI);
     //设置忽略所有信号
     struct sigaction sa;
     bzero(&sa, sizeof(struct sigaction));
@@ -214,6 +220,11 @@ int main(int argc, char* argv[])
             GLOG(IM_INFO, "all children exits, last status:%d", status);
             break;
         }
+    }
+    if (mmapPI) 
+    {
+        GLOG(IM_INFO, "%s", ProcInfo::DebugString(mmapPI, mmapSize / sizeof(ProcInfo)).c_str());
+        munmap(mmapPI, mmapSize);
     }
     delete g_bm;
     g_bm = NULL;

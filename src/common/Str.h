@@ -60,7 +60,7 @@ class Str
         static std::string SafeB64DecNoAppend(const std::string& data);
         static bool AtoI(const std::string& s, int& r);
         static bool AtoF(const std::string& s, double& r);
-
+        static std::string ToKMGT(double v);
 };
 
 #endif

@@ -27,6 +27,9 @@ class Time
         static int StrToUS(const std::string& s);
         static bool LT(const struct timeval& t1,
                 const struct timeval& t2);
+        static std::string StrTimeNow();
+        static double SubTimeMs(const struct timeval& t1,
+                const struct timeval& t2);
     private:
 
     private:

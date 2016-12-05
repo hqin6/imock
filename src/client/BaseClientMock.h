@@ -30,7 +30,8 @@ class BaseClientMock : public BaseMock
         //注册信号处理函数
         int AfterFork();
         virtual int Loop();
-        virtual int Send(QA* qa, RRMessage* msg);
+        virtual int Send(QA* qa, RRMessage* msg, 
+                long& inBytes, long& outBytes, double& spentTimeMs);
     private:
         //返回client角色固有的进程名
         std::string RoleName();

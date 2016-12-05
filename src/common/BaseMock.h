@@ -15,6 +15,7 @@
 #include <string>
 #include <set>
 #include <stdint.h>
+#include "ProcInfo.h"
 
 #define CACHED_FMT 0x01
 #define CACHED_DAT 0x02
@@ -34,18 +35,24 @@ class BaseMock : public Alloc
         //设置mock所对应的名字，用来初始化配置和进程名
         void SetName(const std::string& name);
 
+        std::string& GetName();
+
         //成功返回0，失败返回-1
         //确保调用时GLOG可用
         virtual bool Init();
 
         //负责fork进程，并修改子进程的名字
         //子进程以imock [w][s|c][m_name]命名
-        virtual void Run();
+        virtual void Run(ProcInfo* procInfo);
 
         //写入原始输入消息
         //支持trunc写入：即只保留最近的一个输入消息
         //支持append写入：即保留所有的输入消息
         void WriteMsg(const std::string& msg);
+
+        int GetWorkers();
+
+        static void* OutPutRealInfo(void* bm);
 
     protected:
         //在子类可继承该方法，在fork前执行操作
@@ -86,6 +93,12 @@ class BaseMock : public Alloc
         std::set<int> m_wpids;
         // 发送接收模式，第一位表示R(recv)，第二位表示S(send)
         int m_mode;
+        // 共享内存，存储子进程信息，提供qps、rt统计等
+        ProcInfo* m_mmapProcInfo;
+        // 记录实施qps、rt等
+        std::string m_realInfoFile;
+        // 后台线程,用于输出realinfo
+        pthread_t m_realInfoTid;
     private:
 };
 

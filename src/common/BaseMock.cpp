@@ -5,20 +5,39 @@
 #include "Log.h"
 #include "ProcTitle.h"
 #include "File.h"
+#include "ProcInfo.h"
+#include "Time.h"
+#include "Str.h"
 
 using namespace std;
 
-BaseMock::BaseMock(const string& name) : m_name(name)
+BaseMock::BaseMock(const string& name) : m_name(name), 
+    m_mmapProcInfo(NULL), m_realInfoTid(0)
 {
 }
 
 BaseMock::~BaseMock()
 {
+    if (m_realInfoTid != 0)
+    {
+        pthread_cancel(m_realInfoTid);
+        pthread_join(m_realInfoTid, NULL);
+    }
 }
 
 void BaseMock::SetName(const string& name)
 {
     m_name = name;
+}
+
+string& BaseMock::GetName()
+{
+    return m_name;
+}
+
+int BaseMock::GetWorkers()
+{
+    return m_workers;
 }
 
 bool BaseMock::Init()
@@ -30,11 +49,12 @@ bool BaseMock::Init()
     }
     //获取配置
     Command c[] = {
-        { m_name.c_str(), "workers", ISet::Int,  (uint64_t)&m_workers, "1"  },
-        { m_name.c_str(), "format",  ISet::Str,  (uint64_t)&m_fmtFile, NULL },
-        { m_name.c_str(), "data",    ISet::Str,  (uint64_t)&m_datFile, NULL },
-        { m_name.c_str(), "message", SetMsgFile, (uint64_t)this      , "off"},
-        { m_name.c_str(), "mode",    SetMode,    (uint64_t)this      , "RS" },
+        { m_name.c_str(), "workers", ISet::Int,  (uint64_t)&m_workers     , "1"  },
+        { m_name.c_str(), "format",  ISet::Str,  (uint64_t)&m_fmtFile     , NULL },
+        { m_name.c_str(), "data",    ISet::Str,  (uint64_t)&m_datFile     , NULL },
+        { m_name.c_str(), "message", SetMsgFile, (uint64_t)this           , "off"},
+        { m_name.c_str(), "mode",    SetMode,    (uint64_t)this           , "RS" },
+        { m_name.c_str(), "realinfo",ISet::Str,  (uint64_t)&m_realInfoFile, ""   },
         { NULL,   NULL,      NULL,       0,      NULL  }
     };
     if (! g_iniConf->Get(c, 0))
@@ -44,7 +64,61 @@ bool BaseMock::Init()
     return true;
 }
 
-void BaseMock::Run()
+void* BaseMock::OutPutRealInfo(void* bm)
+{
+    BaseMock* baseMock = (BaseMock*) bm;
+    FILE* realInfoFileHandle = NULL;
+    bool needClose = false;
+    if (baseMock->m_realInfoFile == "/dev/stdout")
+    {
+        realInfoFileHandle = stdout;
+    }
+    else if (baseMock->m_realInfoFile == "/dev/stderr")
+    {
+        realInfoFileHandle = stderr;
+    }
+    else 
+    { 
+        realInfoFileHandle = fopen(baseMock->m_realInfoFile.c_str(), "a+");
+        needClose = true;
+    }
+    int rotate = 0;
+    ProcInfo old;
+    while (true)
+    {
+        ProcInfo now;
+        for (int i = 0; i < baseMock->m_workers; ++i)
+        {
+            now += *(baseMock->m_mmapProcInfo + i);
+        }
+        if (rotate % 20 == 0)
+        {// 打印头部
+            fprintf(realInfoFileHandle, "Time                ---bytin-- --bytout-- ---qpsin-- --qpsout-- ----rt----\n");
+        }
+        if (rotate != 0)
+        {// 非第一次
+            ProcInfo tmp = now - old;
+            fprintf(realInfoFileHandle, "%s %10s %10s %10s %10s %10s\n", 
+                    Time::StrTimeNow().c_str(), 
+                    Str::ToKMGT(tmp.GetRequestNumInBytes()).c_str(),
+                    Str::ToKMGT(tmp.GetRequestNumOutBytes()).c_str(),
+                    Str::ToKMGT(tmp.GetRequestNumIn()).c_str(),
+                    Str::ToKMGT(tmp.GetRequestNumOut()).c_str(),
+                    tmp.GetRequestNumOut() == 0 ? "0.00" : Str::ToKMGT(tmp.GetRequestTimeMS()/tmp.GetRequestNumOut()).c_str()
+                   );
+        }
+        fflush(realInfoFileHandle);
+        old = now;
+        rotate++;
+        sleep(1);
+    }
+    if (needClose)
+    {
+        fclose(realInfoFileHandle);
+    }
+}
+
+void BaseMock::Run(ProcInfo* procInfo)
 {
     if (0 != BeforeFork())
     {
@@ -60,10 +134,21 @@ void BaseMock::Run()
                 GLOG(IM_ERROR, "fork error, errno=%d", errno);
                 return ;
             case 0:
+                m_mmapProcInfo = procInfo + i;
                 goto WORKER;
             default:
                 m_wpids.insert(pid);
                 break;
+        }
+    }
+    m_mmapProcInfo = procInfo;// master 指向头部
+    if (! m_realInfoFile.empty()) 
+    {
+        int ret = pthread_create(&m_realInfoTid, NULL, BaseMock::OutPutRealInfo, this);
+        if (ret != 0) 
+        {
+            GLOG(IM_ERROR, "create thread error, errno=%d", errno);
+            return ;
         }
     }
     return ;

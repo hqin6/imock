@@ -20,6 +20,7 @@ struct TimerInfo
 {
     struct evhttp_request *req;
     RRMessage* res;
+    struct timeval recvMoment;
 };
 
 class HttpServerMock : public BaseServerMock
@@ -49,7 +50,10 @@ class HttpServerMock : public BaseServerMock
         static void TimerCallBack(int fd, short kind, void* userp);
         //event的回调函数，处理每个请求
         static void Process(struct evhttp_request *req, void *arg);
-        static void Send(struct evhttp_request* req, RRMessage* res);
+        static void Send(struct evhttp_request* req, 
+                RRMessage* res, 
+                struct timeval& recvMoment,
+                void* arg);
 
     private:
         int m_port;

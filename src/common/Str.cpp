@@ -614,6 +614,32 @@ bool Str::AtoF(const string& s, double& r)
     return false;
 }
 
+string Str::ToKMGT(double v)
+{
+    char buf[32];
+    if ((1000 - v) > 0.1) 
+    {
+        snprintf(buf, sizeof(buf), "%6.2f", v);
+    }
+    else if ((1000 - v / 1024) > 0.1) 
+    {
+        snprintf(buf, sizeof(buf), "%5.1f%s", v / 1024, "K");
+    } 
+    else if ((1000 - v / 1024 / 1024) > 0.1) 
+    {
+        snprintf(buf, sizeof(buf), "%5.1f%s", v / 1024 / 1024, "M");
+    } 
+    else if ((1000 - v / 1024 / 1024 / 1024) > 0.1) 
+    {
+        snprintf(buf, sizeof(buf), "%5.1f%s", v / 1024 / 1024 / 1024, "G");
+    } 
+    else if ((1000 - v / 1024 / 1024 / 1024 / 1024) > 0.1) 
+    {
+        snprintf(buf, sizeof(buf), "%5.1f%s", v / 1024 / 1024 / 1024 / 1024, "T");
+    }
+    return buf;
+}
+
 #ifdef _JUST_TEST
 
 #include <iostream>

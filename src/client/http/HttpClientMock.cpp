@@ -144,7 +144,8 @@ curl_slist* HttpClientMock::SetHttpHead(RRMessage* req)
     return ch;
 }
 
-int HttpClientMock::Send(QA* qa, RRMessage* req)
+int HttpClientMock::Send(QA* qa, RRMessage* req, 
+        long& inBytes, long& outBytes, double& spentTimeMs)
 {
     int retcode = 0;
     if (! m_curl)
@@ -176,6 +177,9 @@ int HttpClientMock::Send(QA* qa, RRMessage* req)
             1024, Str::ToPrint(req->GetBody()).c_str());
 
     CURLcode res = curl_easy_perform(m_curl);
+    curl_easy_getinfo(m_curl, CURLINFO_REQUEST_SIZE, &outBytes);
+    curl_easy_getinfo(m_curl, CURLINFO_TOTAL_TIME, &spentTimeMs);
+    spentTimeMs *= 1000;// seconds-> ms
     if (res != CURLE_OK)
     {
         GLOG(IM_ERROR, "curl_easy_perform() failed: %s",
@@ -204,8 +208,13 @@ int HttpClientMock::Send(QA* qa, RRMessage* req)
             int size = *(int*)m_response;
             char* p = m_response + sizeof(int);
             body = string(p, size);
-            total += body;
+            total += body + "\r\n";
         }
+        //curl_easy_getinfo(m_curl, CURLINFO_REQUEST_SIZE, &outBytes);
+        curl_easy_getinfo(m_curl, CURLINFO_HEADER_SIZE, &inBytes);
+        //curl_easy_getinfo(m_curl, CURLINFO_TOTAL_TIME, &spentTimeMs);
+        inBytes += body.size(); 
+
         GLOG(IM_INFO, "[recv] ------head------\n%s", head.c_str());
         GLOG(IM_INFO, "[recv] answer len=%d", body.size());
         GLOG(IM_INFO, "[recv] answer body[0,1024]=%.*s", 

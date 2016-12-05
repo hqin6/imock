@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <iostream>
+#include <sys/mman.h>
 #include "INIConf.h"
 #include "Log.h"
 #include "MockServerFactory.h"
@@ -32,6 +33,13 @@ static void usage(const char* programName)
     printf("  %s -s start\n", programName);
     printf("  %s -c imock-server.conf -s start\n", programName);
 }
+
+struct MmapProcInfo 
+{
+    ProcInfo* pi;
+    BaseMock* bm;
+    int size;
+};
 
 static bool LoadMocks(const string& val, void* data, uint64_t o)
 {
@@ -63,10 +71,18 @@ static bool LoadMocks(const string& val, void* data, uint64_t o)
         allm.push_back(bm);
         GLOG(IM_DEBUG, "Run %s", area.c_str());
     }
+    vector<MmapProcInfo> mmapPIs;
     for (vector<BaseMock*>::iterator it = allm.begin(); 
             it != allm.end(); ++it)
     {
-        (*it)->Run();
+        MmapProcInfo mmapPI;
+        mmapPI.size = (*it)->GetWorkers() * sizeof(ProcInfo);
+        mmapPI.pi = (ProcInfo*)mmap(NULL, 
+                mmapPI.size, PROT_READ|PROT_WRITE, 
+                MAP_SHARED|MAP_ANONYMOUS, -1, 0);
+        mmapPIs.push_back(mmapPI);
+        mmapPI.bm = *it;
+        (*it)->Run(mmapPI.pi);
     }
 
     //设置忽略所有信号
@@ -101,6 +117,13 @@ static bool LoadMocks(const string& val, void* data, uint64_t o)
             GLOG(IM_INFO, "all children exits!");
             break;
         }
+    }
+    for (vector<MmapProcInfo>::iterator it = mmapPIs.begin();
+            it != mmapPIs.end(); ++it)
+    {
+        GLOG(IM_INFO, "[%s] %s", it->bm->GetName().c_str(),
+                ProcInfo::DebugString(it->pi, it->size / sizeof(ProcInfo)).c_str());
+        munmap(it->pi, it->size);
     }
     return true;
 }
